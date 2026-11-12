@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JANZY MENU</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090909;color:white;
+ font-family:Arial,sans-serif;padding:18px
+}
+.menu{
+ max-width:430px;margin:25px auto;
+ background:#171717;border:1px solid #8e1717;
+ border-radius:17px;padding:20px;
+ box-shadow:0 0 22px #650b0b66
+}
+h1{text-align:center;color:#ff2929;letter-spacing:4px}
+.sub{text-align:center;color:#999;font-size:12px}
+.section{
+ background:#242424;padding:14px;
+ margin:12px 0;border-radius:10px;
+ border-left:3px solid #e21c1c
+}
+.item{
+ display:flex;justify-content:space-between;
+ align-items:center;margin:12px 0
+}
+button{
+ background:#b51212;color:white;border:0;
+ padding:10px 15px;border-radius:7px;
+ cursor:pointer
+}
+button.active{background:#168747}
+.value{color:#ff5555;font-weight:bold}
+.info{color:#aaa;font-size:12px}
+input[type=range]{width:100%;accent-color:red}
+#espView{
+ height:190px;background:#080808;
+ border:1px solid #555;position:relative;
+ display:flex;align-items:center;justify-content:center;
+ overflow:hidden
+}
+.target{
+ width:65px;height:110px;border:2px solid #ff3333;
+ position:relative;display:none
+}
+.target:before{
+ content:"";position:absolute;width:23px;height:23px;
+ border:2px solid #ff3333;border-radius:50%;
+ top:-29px;left:19px
+}
+.target:after{
+ content:"PLAYER DEMO";position:absolute;
+ top:115px;left:-5px;color:#ff4444;
+ font-size:10px;white-space:nowrap
+}
+footer{text-align:center;color:#777;font-size:11px}
+</style>
+</head>
+<body>
+<div class="menu">
+<h1>JANZY</h1>
+<div class="sub">FREE FIRE STYLE • DEMO V1.0</div>
+
+<div class="section">
+<b>MAIN FEATURES</b>
+<div class="item">
+<span>AIMBOT SIMULATION</span>
+<button onclick="toggle(this)">OFF</button>
+</div>
+<div class="item">
+<span>ESP SIMULATION</span>
+<button onclick="toggleESP(this)">OFF</button>
+</div>
+</div>
+
+<div class="section">
+<b>PLAYER INFORMATION</b>
+<p>X: <span class="value" id="x">12.50</span></p>
+<p>Y: <span class="value" id="y">3.20</span></p>
+<p>Z: <span class="value" id="z">25.80</span></p>
+<div class="info">Tọa độ nhân vật mẫu trong website.</div>
+</div>
+
+<div class="section">
+<b>PLAYER POSITION DEMO</b>
+<label>X</label>
+<input type="range" min="-100" max="100" value="12.5"
+oninput="update('x',this.value)">
+<label>Y</label>
+<input type="range" min="-100" max="100" value="3.2"
+oninput="update('y',this.value)">
+<label>Z</label>
+<input type="range" min="-100" max="100" value="25.8"
+oninput="update('z',this.value)">
+</div>
+
+<div class="section">
+<b>ESP PREVIEW</b>
+<div id="espView">
+<div class="target" id="target"></div>
+<span id="placeholder" class="info">PLAYER NOT DISPLAYED</span>
+</div>
+</div>
+
+<div class="section">
+<b>HEAD POSITION</b>
+<p class="info">Head X: <span id="hx">12.50</span></p>
+<p class="info">Head Y: <span id="hy">4.90</span></p>
+<p class="info">Head Z: <span id="hz">25.80</span></p>
+</div>
+
+<div class="section">
+<button onclick="reset()">RESET CONFIG</button>
+<span class="info" id="status"> READY</span>
+</div>
+<footer>JANZY MENU • INDEPENDENT DEMO</footer>
+</div>
+
+<script>
+function toggle(btn){
+ btn.classList.toggle("active");
+ btn.textContent=btn.classList.contains("active")?"ON":"OFF";
+ document.getElementById("status").textContent=
+ " AIM SIMULATION: "+btn.textContent;
+}
+function toggleESP(btn){
+ btn.classList.toggle("active");
+ let on=btn.classList.contains("active");
+ btn.textContent=on?"ON":"OFF";
+ document.getElementById("target").style.display=on?"block":"none";
+ document.getElementById("placeholder").style.display=on?"none":"block";
+}
+function update(axis,value){
+ let v=Number(value);
+ document.getElementById(axis).textContent=v.toFixed(2);
+ document.getElementById("h"+axis).textContent=
+ (axis==="y"?v+1.7:v).toFixed(2);
+}
+function reset(){
+ document.querySelectorAll("button").forEach(b=>{
+  if(b.textContent==="ON"){
+   b.textContent="OFF";
+   b.classList.remove("active");
+  }
+ });
+ document.querySelectorAll('input[type="range"]').forEach((r,i)=>{
+  r.value=[12.5,3.2,25.8][i];
+  update(["x","y","z"][i],r.value);
+ });
+ document.getElementById("target").style.display="none";
+ document.getElementById("placeholder").style.display="block";
+ document.getElementById("status").textContent=" RESET COMPLETE";
+}
+</script>
+</body>
+</html>
